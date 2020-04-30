@@ -159,6 +159,7 @@ const {
   privateView,
   publishCustomView,
   publishView,
+  rouletteView,
   subtopicView,
   searchView,
   imageSearchView,
@@ -383,6 +384,23 @@ router
   })
   .get("/publish/custom/", async (ctx) => {
     ctx.body = await publishCustomView();
+  })
+  .get("/roulette", async (ctx) => {
+    const blobListSource = await blob.ls();
+    const blobList = await new Promise((resolve, reject) => {
+      pull(
+        blobListSource,
+        pull.collect((err, val) => {
+          if (err) return reject(err);
+          resolve(val);
+        })
+      );
+    });
+    let randomBlob;
+    if (blobList.length > 0) {
+      randomBlob = blobList[Math.floor(Math.random() * blobList.length)];
+    }
+    ctx.body = await rouletteView(randomBlob);
   })
   .get("/json/:message", async (ctx) => {
     if (config.public) {

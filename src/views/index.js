@@ -128,6 +128,7 @@ const template = (titlePrefix, ...elements) => {
             emoji: "🧵",
             text: i18n.threads,
           }),
+          navLink({ href: "/roulette", emoji: "🃏", text: i18n.roulette }),
           navLink({ href: "/profile", emoji: "🐱", text: i18n.profile }),
           navLink({ href: "/mentions", emoji: "💬", text: i18n.mentions }),
           navLink({ href: "/inbox", emoji: "✉️", text: i18n.private }),
@@ -753,6 +754,36 @@ exports.publishView = () => {
     p(i18n.publishCustomInfo({ href: "/publish/custom" }))
   );
 };
+
+exports.rouletteView = (blob) => {
+  let rouletteContent;
+  if (blob === undefined) {
+    rouletteContent = p(
+      "Your database had no blobs :("
+    );
+  } else {
+    rouletteContent = img({
+      src: `/blob/${encodeURIComponent(blob)}`,
+      alt: ""
+    });
+  }
+
+  return template(
+    i18n.roulette,
+    section(
+      h1(i18n.roulette),
+      p(i18n.rouletteRandom),
+      p(
+        i18n.rouletteNotImage,
+        a(
+          { href: '/roulette' },
+          i18n.rouletteSpinAgain
+        )
+      ),
+      rouletteContent
+    )
+  );
+}
 
 /**
  * @param {{status: object, peers: any[], theme: string, themeNames: string[], version: string }} input

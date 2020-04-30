@@ -164,6 +164,10 @@ module.exports = ({ cooler, isPublic }) => {
       const ssb = await cooler.open();
       return ssb.blobs.get(blobId);
     },
+    ls: async () => {
+      const ssb = await cooler.open();
+      return ssb.blobs.ls();
+    },
     want: async ({ blobId }) => {
       debug("want blob: %s", blobId);
       const ssb = await cooler.open();
